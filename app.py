@@ -6,172 +6,290 @@ import numpy as np
 from pathlib import Path
 
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.ensemble import RandomForestClassifier, IsolationForest
+from sklearn.linear_model import LogisticRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 import plotly.express as px
 
-# =========================
-# Cấu hình trang
-# =========================
 st.set_page_config(
-    page_title="Phân tích Báo cáo Tài chính",
+    page_title="Phân tích báo cáo tài chính & phát hiện gian lận",
     layout="wide"
 )
 
-st.title("📊 Hệ thống Phân tích Báo cáo Tài chính")
-st.markdown("""
-Ứng dụng sử dụng Machine Learning để phát hiện các dấu hiệu bất thường
-trong báo cáo tài chính doanh nghiệp.
-""")
+st.title("📊 Hệ thống phân tích báo cáo tài chính và phát hiện gian lận")
+st.markdown(
+    """
+    Ứng dụng này cung cấp phân tích chuyên sâu báo cáo tài chính doanh nghiệp,
+    bao gồm giám sát dữ liệu, thống kê, mô hình phân loại và phát hiện bất thường.
+    """
+)
 
-# =========================
-# Tải dữ liệu
-# =========================
-DATA_FILENAME = "Financial Statement Anomaly Dataset.csv"
-local_path = Path(DATA_FILENAME)
+DEFAULT_CSV = "Financial Statement Anomaly Dataset.csv"
+default_path = Path.home() / "Downloads" / DEFAULT_CSV
 
-uploaded_file = st.file_uploader("Upload CSV", type=["csv"])
+st.sidebar.header("Tập dữ liệu")
+uploaded_file = st.sidebar.file_uploader("Upload file CSV", type=["csv"])
+use_default = st.sidebar.checkbox("Sử dụng dữ liệu mẫu", value=True)
 
 if uploaded_file is not None:
     try:
         df = pd.read_csv(uploaded_file)
-        st.success("Đã tải dữ liệu từ file upload thành công.")
+        st.sidebar.success("Tải dữ liệu upload thành công.")
     except Exception as e:
-        st.error(f"Không đọc được file upload: {e}")
+        st.sidebar.error(f"Không đọc được file upload: {e}")
         st.stop()
-
-elif local_path.exists():
+elif use_default and default_path.exists():
     try:
-        df = pd.read_csv(local_path)
-        st.success(f"Đã tải dữ liệu từ {DATA_FILENAME}.")
+        df = pd.read_csv(default_path)
+        st.sidebar.success(f"Đã tải dữ liệu mẫu từ {DEFAULT_CSV}.")
     except Exception as e:
-        st.error(f"Không đọc được file CSV: {e}")
+        st.sidebar.error(f"Không đọc được file mẫu: {e}")
         st.stop()
-
 else:
-    st.warning(
-        "Chưa có file CSV để đọc. Vui lòng upload file hoặc đặt file "
-        f"'{DATA_FILENAME}' cùng thư mục với app.py."
+    st.sidebar.warning(
+        "Chưa có dữ liệu. Vui lòng upload file CSV hoặc đặt file mẫu vào thư mục Downloads."
     )
     st.stop()
 
-st.subheader("Dữ liệu mẫu")
-st.dataframe(df.head())
+possible_targets = [
+    "Financial_Status",
+    "Anomaly",
+    "Fraud",
+    "Label",
+    "Target",
+    "Class"
+]
 
-# =========================
-# Thông tin dữ liệu
-# =========================
-st.subheader("Thông tin dữ liệu")
+default_label = next((c for c in possible_targets if c in df.columns), None)
+selected_label = st.sidebar.selectbox(
+    "Chọn cột nhãn:",
+    options=df.columns.tolist(),
+    index=df.columns.get_loc(default_label) if default_label is not None else 0,
+)
 
-col1, col2 = st.columns(2)
-with col1:
-    st.metric("Số dòng", df.shape[0])
-with col2:
-    st.metric("Số cột", df.shape[1])
+if selected_label not in df.columns:
+    st.error("Cột nhãn không tồn tại trong dữ liệu.")
+    st.stop()
 
-# =========================
-# Xác định cột nhãn
-# =========================
-possible_targets = ["Anomaly", "Fraud", "Label", "Target", "Class", "Financial_Status"]
+raw_y = df[selected_label]
+y, y_labels = pd.factorize(raw_y)
+label_decoder = {idx: label for idx, label in enumerate(y_labels)}
 
-found_targets = [col for col in possible_targets if col in df.columns]
+X = df.drop(columns=[selected_label])
+numeric_cols = X.select_dtypes(include=np.number).columns.tolist()
 
-if found_targets:
-    target_col = found_targets[0]
-    st.info(f"Tự động chọn cột nhãn: {target_col}")
+if len(numeric_cols) == 0:
+    st.error("Không có cột số nào để phân tích. Vui lòng kiểm tra file CSV.")
+    st.stop()
+
+X = X[numeric_cols].fillna(X[numeric_cols].mean())
+
+st.sidebar.header("Cấu hình mô hình")
+classifier_name = st.sidebar.selectbox(
+    "Chọn mô hình phân loại:",
+    ["Random Forest", "Logistic Regression"],
+)
+
+test_size = st.sidebar.slider(
+    "Tỷ lệ dữ liệu kiểm tra:",
+    min_value=0.1,
+    max_value=0.5,
+    value=0.2,
+    step=0.05,
+)
+
+random_state = st.sidebar.number_input(
+    "Random state:",
+    min_value=0,
+    max_value=9999,
+    value=42,
+)
+
+contamination = st.sidebar.slider(
+    "Tỷ lệ bất thường (IsolationForest):",
+    min_value=0.01,
+    max_value=0.2,
+    value=0.05,
+    step=0.01,
+)
+
+st.markdown("## Tổng quan dữ liệu")
+col1, col2, col3 = st.columns(3)
+col1.metric("Số dòng", df.shape[0])
+col2.metric("Số cột", df.shape[1])
+col3.metric("Số cột số", len(numeric_cols))
+
+with st.expander("Xem trước dữ liệu"):
+    st.dataframe(df.head())
+
+with st.expander("Thống kê số học"):
+    st.dataframe(df[numeric_cols].describe())
+
+with st.expander("Phân phối nhãn"):
+    label_counts = pd.Series(y).map(label_decoder).value_counts().reset_index()
+    label_counts.columns = [selected_label, "Số lượng"]
+    fig_label = px.bar(
+        label_counts,
+        x=selected_label,
+        y="Số lượng",
+        title="Phân phối nhãn trong dữ liệu",
+        text="Số lượng",
+    )
+    st.plotly_chart(fig_label, width='stretch')
+
+with st.expander("Ma trận tương quan"):
+    corr = X.corr()
+    fig_corr = px.imshow(
+        corr,
+        text_auto=True,
+        aspect="auto",
+        title="Ma trận tương quan giữa các chỉ số tài chính",
+    )
+    st.plotly_chart(fig_corr, width='stretch')
+
+st.markdown("## Huấn luyện mô hình phát hiện gian lận")
+label_counts = pd.Series(y).value_counts()
+if label_counts.min() < 2:
+    st.warning(
+        "Một số lớp nhãn có quá ít mẫu để stratify khi chia tập dữ liệu. "
+        "Chuyển sang chia dữ liệu không stratify."
+    )
+    stratify_value = None
 else:
-    st.warning(
-        "Không tìm thấy cột nhãn mặc định (Anomaly/Fraud/Label/Target/Class/Financial_Status)."
-    )
-    target_col = st.selectbox(
-        "Chọn cột nhãn trong dữ liệu:",
-        options=df.columns.tolist(),
-        help="Chọn cột chứa thông tin trạng thái bất thường/gian lận."
-    )
+    stratify_value = y
 
-if not target_col:
-    st.error("Vui lòng chọn một cột nhãn để tiếp tục.")
-    st.stop()
-
-# =========================
-# Tiền xử lý dữ liệu
-# =========================
-y = df[target_col]
-if y.dtype == object or y.dtype == bool:
-    y = pd.factorize(y)[0]
-
-X = df.drop(columns=[target_col])
-X = X.select_dtypes(include=np.number)
-X = X.fillna(X.mean())
-
-if X.shape[1] == 0:
-    st.error("Không có cột số để huấn luyện mô hình. Vui lòng kiểm tra dữ liệu CSV.")
-    st.stop()
-
-# =========================
-# Chia tập dữ liệu
-# =========================
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
-    test_size=0.2,
-    random_state=42
+    test_size=test_size,
+    stratify=stratify_value,
+    random_state=random_state,
 )
 
-# =========================
-# Huấn luyện mô hình
-# =========================
-model = RandomForestClassifier(n_estimators=100, random_state=42)
+if classifier_name == "Random Forest":
+    model = RandomForestClassifier(n_estimators=200, random_state=random_state)
+else:
+    model = LogisticRegression(max_iter=1000, solver="liblinear", random_state=random_state)
+
 model.fit(X_train, y_train)
-
-# =========================
-# Đánh giá
-# =========================
 y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
+acc = accuracy_score(y_test, y_pred)
 
-st.subheader("Độ chính xác mô hình")
-st.metric(label="Accuracy", value=f"{accuracy*100:.2f}%")
+st.subheader("Kết quả phân loại")
+metric_col1, metric_col2 = st.columns(2)
+metric_col1.metric("Accuracy", f"{acc * 100:.2f}%")
+metric_col2.metric("Số lớp", len(label_decoder))
 
-# =========================
-# Biểu đồ phân bố nhãn
-# =========================
-st.subheader("Phân bố dữ liệu")
-fig = px.histogram(df, x=target_col, title="Phân bố bất thường và bình thường")
-st.plotly_chart(fig, use_container_width=True)
+with st.expander("Báo cáo phân loại"):
+    st.text(
+        classification_report(
+            y_test,
+            y_pred,
+            target_names=[label_decoder[i] for i in sorted(label_decoder)],
+        )
+    )
 
-# =========================
-# Tầm quan trọng thuộc tính
-# =========================
-st.subheader("Các chỉ số ảnh hưởng nhiều nhất")
-importance = pd.DataFrame({"Feature": X.columns, "Importance": model.feature_importances_})
-importance = importance.sort_values(by="Importance", ascending=False)
-fig2 = px.bar(
-    importance.head(10),
-    x="Importance",
-    y="Feature",
-    orientation="h",
-    title="Top 10 thuộc tính quan trọng"
+with st.expander("Confusion matrix"):
+    cm = confusion_matrix(y_test, y_pred)
+    fig_cm = px.imshow(
+        cm,
+        labels={"x": "Dự đoán", "y": "Thực tế"},
+        x=[label_decoder[i] for i in sorted(label_decoder)],
+        y=[label_decoder[i] for i in sorted(label_decoder)],
+        text_auto=True,
+        title="Confusion Matrix",
+    )
+    st.plotly_chart(fig_cm, width='stretch')
+
+importance_values = (
+    model.feature_importances_
+    if classifier_name == "Random Forest"
+    else np.abs(model.coef_).flatten()
 )
-st.plotly_chart(fig2, use_container_width=True)
+importance_df = pd.DataFrame(
+    {"Feature": numeric_cols, "Importance": importance_values}
+).sort_values(by="Importance", ascending=False)
 
-# =========================
-# Dự đoán mẫu mới
-# =========================
-st.subheader("Kiểm tra doanh nghiệp")
-input_data = {}
-for col in X.columns:
-    input_data[col] = st.number_input(col, value=float(X[col].mean()))
+with st.expander("Các chỉ số quan trọng nhất"):
+    st.dataframe(importance_df.head(10))
+    fig_imp = px.bar(
+        importance_df.head(10),
+        x="Importance",
+        y="Feature",
+        orientation="h",
+        title="Top 10 chỉ số quan trọng nhất",
+    )
+    st.plotly_chart(fig_imp, width='stretch')
 
-if st.button("Dự đoán"):
-    sample = pd.DataFrame([
-        {col: input_data.get(col, float(X[col].mean())) for col in X.columns}
-    ])
-    sample = sample[X.columns]
-    prediction = model.predict(sample)[0]
-    if prediction == 1:
-        st.error("⚠️ Có dấu hiệu bất thường/gian lận")
+st.markdown("## Phát hiện bất thường không giám sát")
+use_unsupervised = st.checkbox("Kích hoạt phân tích bất thường không giám sát", value=True)
+if use_unsupervised:
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    iso = IsolationForest(contamination=contamination, random_state=random_state)
+    iso.fit(X_scaled)
+    anomaly_scores = -iso.score_samples(X_scaled)
+    anomaly_labels = np.where(iso.predict(X_scaled) == -1, "Bất thường", "Bình thường")
+
+    df_anomaly = df.copy()
+    df_anomaly["AnomalyScore"] = anomaly_scores
+    df_anomaly["AnomalyFlag"] = anomaly_labels
+
+    st.write("### Top 20 bản ghi có nguy cơ bất thường cao")
+    st.dataframe(df_anomaly.sort_values(by="AnomalyScore", ascending=False).head(20))
+
+    anomaly_summary = df_anomaly["AnomalyFlag"].value_counts().reset_index()
+    anomaly_summary.columns = ["Trạng thái", "Số lượng"]
+    fig_anom = px.bar(
+        anomaly_summary,
+        x="Trạng thái",
+        y="Số lượng",
+        title="Tỷ lệ bất thường không giám sát",
+        text="Số lượng",
+    )
+    st.plotly_chart(fig_anom, width='stretch')
+
+    st.write("### Điểm bất thường trung bình theo nhãn thực tế")
+    df_anomaly[selected_label] = raw_y
+    score_by_label = df_anomaly.groupby(selected_label)["AnomalyScore"].mean().reset_index()
+    fig_score = px.bar(
+        score_by_label,
+        x=selected_label,
+        y="AnomalyScore",
+        title="Điểm bất thường trung bình theo nhãn thực tế",
+    )
+    st.plotly_chart(fig_score, width='stretch')
+
+st.markdown("## Dự đoán một báo cáo tài chính mới")
+with st.form("predict_form"):
+    input_cols = st.columns(2)
+    sample_data = {}
+    for idx, col_name in enumerate(numeric_cols):
+        with input_cols[idx % 2]:
+            sample_data[col_name] = st.number_input(
+                col_name,
+                value=float(X[col_name].mean()),
+                format="%.4f",
+            )
+    submitted = st.form_submit_button("Dự đoán")
+
+if submitted:
+    sample_df = pd.DataFrame([sample_data], columns=numeric_cols)
+    predicted = model.predict(sample_df)[0]
+    predicted_label = label_decoder.get(predicted, str(predicted))
+
+    st.write(f"**Kết quả dự đoán:** {predicted_label}")
+    if str(predicted_label).strip().lower() != "normal":
+        st.error("⚠️ Mẫu này được dự đoán là bất thường / gian lận tiềm năng.")
     else:
-        st.success("✅ Báo cáo tài chính bình thường")
-    
+        st.success("✅ Mẫu này được dự đoán là bình thường.")
+
+    if use_unsupervised:
+        sample_scaled = scaler.transform(sample_df)
+        unsup_pred = iso.predict(sample_scaled)[0]
+        if unsup_pred == -1:
+            st.warning("IsolationForest cũng đánh giá mẫu này là bất thường.")
+        else:
+            st.info("IsolationForest đánh giá mẫu này là bình thường.")
