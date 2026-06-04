@@ -1,0 +1,292 @@
+Microsoft Windows [Version 10.0.26200.8457]
+(c) Microsoft Corporation. All rights reserved.
+
+(base) C:\Users\Admin>conda create -n web-ai python=3.11
+3 channel Terms of Service accepted
+Retrieving notices: done
+Channels:
+ - defaults
+Platform: win-64
+Collecting package metadata (repodata.json): done
+Solving environment: done
+
+
+==> WARNING: A newer version of conda exists. <==
+    current version: 26.1.1
+    latest version: 26.5.2
+
+Please update conda by running
+
+    $ conda update -n base -c defaults conda
+
+
+
+## Package Plan ##
+
+  environment location: C:\Users\Admin\anaconda3\envs\web-ai
+
+  added / updated specs:
+    - python=3.11
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    ca-certificates-2026.5.14  |       haa95532_0         107 KB
+    libexpat-2.8.1             |       hd7fb8db_0         122 KB
+    pip-26.1.1                 |     pyhc872135_1         1.1 MB
+    tzdata-2026b               |       he532380_0         118 KB
+    ------------------------------------------------------------
+                                           Total:         1.5 MB
+
+The following NEW packages will be INSTALLED:
+
+  bzip2              pkgs/main/win-64::bzip2-1.0.8-h2bbff1b_6
+  ca-certificates    pkgs/main/win-64::ca-certificates-2026.5.14-haa95532_0
+  libexpat           pkgs/main/win-64::libexpat-2.8.1-hd7fb8db_0
+  libffi             pkgs/main/win-64::libffi-3.4.8-h2b21627_2
+  libzlib            pkgs/main/win-64::libzlib-1.3.1-h1c6eee0_1
+  openssl            pkgs/main/win-64::openssl-3.5.6-hbb43b14_0
+  packaging          pkgs/main/win-64::packaging-26.0-py311haa95532_0
+  pip                pkgs/main/noarch::pip-26.1.1-pyhc872135_1
+  python             pkgs/main/win-64::python-3.11.15-h1044e36_0
+  setuptools         pkgs/main/win-64::setuptools-82.0.1-py311haa95532_0
+  sqlite             pkgs/main/win-64::sqlite-3.51.2-hee5a0db_0
+  tk                 pkgs/main/win-64::tk-8.6.15-hf199647_0
+  tzdata             pkgs/main/noarch::tzdata-2026b-he532380_0
+  ucrt               pkgs/main/win-64::ucrt-10.0.22621.0-haa95532_0
+  vc                 pkgs/main/win-64::vc-14.3-h2df5915_12
+  vc14_runtime       pkgs/main/win-64::vc14_runtime-14.44.35208-h4927774_12
+  vs2015_runtime     pkgs/main/win-64::vs2015_runtime-14.44.35208-ha6b5a95_12
+  wheel              pkgs/main/win-64::wheel-0.46.3-py311haa95532_0
+  xz                 pkgs/main/win-64::xz-5.8.2-h53af0af_0
+  zlib               pkgs/main/win-64::zlib-1.3.1-h1c6eee0_1
+
+
+Proceed ([y]/n)? y
+
+
+Downloading and Extracting Packages:
+
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+#
+# To activate this environment, use
+#
+#     $ conda activate web-ai
+#
+# To deactivate an active environment, use
+#
+#     $ conda deactivate
+
+
+(base) C:\Users\Admin>conda activate web-ai
+
+(web-ai) C:\Users\Admin>pip install streamlit
+Collecting streamlit
+  Downloading streamlit-1.58.0-py3-none-any.whl.metadata (9.6 kB)
+Collecting altair!=5.4.0,!=5.4.1,<7,>=4.0 (from streamlit)
+  Downloading altair-6.1.0-py3-none-any.whl.metadata (11 kB)
+Collecting blinker<2,>=1.5.0 (from streamlit)
+  Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+Collecting cachetools<8,>=5.5 (from streamlit)
+  Downloading cachetools-7.1.4-py3-none-any.whl.metadata (5.5 kB)
+Collecting click<9,>=7.0 (from streamlit)
+  Downloading click-8.4.1-py3-none-any.whl.metadata (2.6 kB)
+Collecting gitpython!=3.1.19,<4,>=3.0.7 (from streamlit)
+  Downloading gitpython-3.1.50-py3-none-any.whl.metadata (14 kB)
+Collecting numpy<3,>=1.23 (from streamlit)
+  Using cached numpy-2.4.6-cp311-cp311-win_amd64.whl.metadata (6.6 kB)
+Requirement already satisfied: packaging>=20 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (26.0)
+Collecting pandas<4,>=1.4.0 (from streamlit)
+  Using cached pandas-3.0.3-cp311-cp311-win_amd64.whl.metadata (19 kB)
+Collecting pillow<13,>=7.1.0 (from streamlit)
+  Using cached pillow-12.2.0-cp311-cp311-win_amd64.whl.metadata (9.0 kB)
+Collecting pydeck<1,>=0.8.0b4 (from streamlit)
+  Downloading pydeck-0.9.2-py2.py3-none-any.whl.metadata (4.2 kB)
+Collecting protobuf<8,>=3.20 (from streamlit)
+  Using cached protobuf-7.35.0-cp310-abi3-win_amd64.whl.metadata (595 bytes)
+Collecting pyarrow>=7.0 (from streamlit)
+  Downloading pyarrow-24.0.0-cp311-cp311-win_amd64.whl.metadata (3.0 kB)
+Collecting requests<3,>=2.27 (from streamlit)
+  Using cached requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting tenacity<10,>=8.1.0 (from streamlit)
+  Downloading tenacity-9.1.4-py3-none-any.whl.metadata (1.2 kB)
+Collecting toml<2,>=0.10.1 (from streamlit)
+  Downloading toml-0.10.2-py2.py3-none-any.whl.metadata (7.1 kB)
+Collecting typing-extensions<5,>=4.10.0 (from streamlit)
+  Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting starlette>=0.40.0 (from streamlit)
+  Using cached starlette-1.2.1-py3-none-any.whl.metadata (6.3 kB)
+Collecting uvicorn>=0.30.0 (from streamlit)
+  Downloading uvicorn-0.48.0-py3-none-any.whl.metadata (6.7 kB)
+Collecting httptools>=0.6.3 (from streamlit)
+  Downloading httptools-0.8.0-cp311-cp311-win_amd64.whl.metadata (3.7 kB)
+Collecting anyio>=4.0.0 (from streamlit)
+  Using cached anyio-4.13.0-py3-none-any.whl.metadata (4.5 kB)
+Collecting python-multipart>=0.0.10 (from streamlit)
+  Using cached python_multipart-0.0.30-py3-none-any.whl.metadata (2.1 kB)
+Collecting websockets>=12.0.0 (from streamlit)
+  Downloading websockets-16.0-cp311-cp311-win_amd64.whl.metadata (7.0 kB)
+Collecting itsdangerous>=2.1.2 (from streamlit)
+  Using cached itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+Collecting watchdog<7,>=2.1.5 (from streamlit)
+  Downloading watchdog-6.0.0-py3-none-win_amd64.whl.metadata (44 kB)
+Collecting jinja2 (from altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit)
+  Using cached jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+Collecting jsonschema>=3.0 (from altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit)
+  Using cached jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+Collecting narwhals>=2.4.0 (from altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit)
+  Downloading narwhals-2.22.0-py3-none-any.whl.metadata (15 kB)
+Collecting colorama (from click<9,>=7.0->streamlit)
+  Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Collecting gitdb<5,>=4.0.1 (from gitpython!=3.1.19,<4,>=3.0.7->streamlit)
+  Downloading gitdb-4.0.12-py3-none-any.whl.metadata (1.2 kB)
+Collecting smmap<6,>=3.0.1 (from gitdb<5,>=4.0.1->gitpython!=3.1.19,<4,>=3.0.7->streamlit)
+  Downloading smmap-5.0.3-py3-none-any.whl.metadata (4.6 kB)
+Collecting python-dateutil>=2.8.2 (from pandas<4,>=1.4.0->streamlit)
+  Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+Collecting tzdata (from pandas<4,>=1.4.0->streamlit)
+  Using cached tzdata-2026.2-py2.py3-none-any.whl.metadata (1.4 kB)
+Collecting charset_normalizer<4,>=2 (from requests<3,>=2.27->streamlit)
+  Using cached charset_normalizer-3.4.7-cp311-cp311-win_amd64.whl.metadata (41 kB)
+Collecting idna<4,>=2.5 (from requests<3,>=2.27->streamlit)
+  Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+Collecting urllib3<3,>=1.26 (from requests<3,>=2.27->streamlit)
+  Using cached urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
+Collecting certifi>=2023.5.7 (from requests<3,>=2.27->streamlit)
+  Using cached certifi-2026.5.20-py3-none-any.whl.metadata (2.5 kB)
+Collecting MarkupSafe>=2.0 (from jinja2->altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit)
+  Using cached markupsafe-3.0.3-cp311-cp311-win_amd64.whl.metadata (2.8 kB)
+Collecting attrs>=22.2.0 (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit)
+  Using cached attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit)
+  Using cached jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting referencing>=0.28.4 (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit)
+  Using cached referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+Collecting rpds-py>=0.25.0 (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit)
+  Downloading rpds_py-2026.5.1-cp311-cp311-win_amd64.whl.metadata (4.2 kB)
+Collecting six>=1.5 (from python-dateutil>=2.8.2->pandas<4,>=1.4.0->streamlit)
+  Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+Collecting h11>=0.8 (from uvicorn>=0.30.0->streamlit)
+  Using cached h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Downloading streamlit-1.58.0-py3-none-any.whl (9.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 9.2/9.2 MB 1.6 MB/s  0:00:05
+Downloading altair-6.1.0-py3-none-any.whl (796 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 797.0/797.0 kB 1.9 MB/s  0:00:00
+Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Downloading cachetools-7.1.4-py3-none-any.whl (16 kB)
+Downloading click-8.4.1-py3-none-any.whl (116 kB)
+Downloading gitpython-3.1.50-py3-none-any.whl (212 kB)
+Downloading gitdb-4.0.12-py3-none-any.whl (62 kB)
+Using cached numpy-2.4.6-cp311-cp311-win_amd64.whl (12.6 MB)
+Using cached pandas-3.0.3-cp311-cp311-win_amd64.whl (9.9 MB)
+Using cached pillow-12.2.0-cp311-cp311-win_amd64.whl (7.1 MB)
+Using cached protobuf-7.35.0-cp310-abi3-win_amd64.whl (439 kB)
+Downloading pydeck-0.9.2-py2.py3-none-any.whl (11.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 11.3/11.3 MB 1.7 MB/s  0:00:06
+Using cached requests-2.34.2-py3-none-any.whl (73 kB)
+Using cached charset_normalizer-3.4.7-cp311-cp311-win_amd64.whl (159 kB)
+Downloading idna-3.18-py3-none-any.whl (65 kB)
+Downloading smmap-5.0.3-py3-none-any.whl (24 kB)
+Downloading tenacity-9.1.4-py3-none-any.whl (28 kB)
+Downloading toml-0.10.2-py2.py3-none-any.whl (16 kB)
+Using cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+Using cached urllib3-2.7.0-py3-none-any.whl (131 kB)
+Downloading watchdog-6.0.0-py3-none-win_amd64.whl (79 kB)
+Using cached anyio-4.13.0-py3-none-any.whl (114 kB)
+Using cached certifi-2026.5.20-py3-none-any.whl (134 kB)
+Downloading httptools-0.8.0-cp311-cp311-win_amd64.whl (90 kB)
+Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Using cached jinja2-3.1.6-py3-none-any.whl (134 kB)
+Using cached jsonschema-4.26.0-py3-none-any.whl (90 kB)
+Using cached attrs-26.1.0-py3-none-any.whl (67 kB)
+Using cached jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+Using cached markupsafe-3.0.3-cp311-cp311-win_amd64.whl (15 kB)
+Downloading narwhals-2.22.0-py3-none-any.whl (453 kB)
+Downloading pyarrow-24.0.0-cp311-cp311-win_amd64.whl (27.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 27.3/27.3 MB 1.6 MB/s  0:00:16
+Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+Downloading python_multipart-0.0.30-py3-none-any.whl (29 kB)
+Using cached referencing-0.37.0-py3-none-any.whl (26 kB)
+Downloading rpds_py-2026.5.1-cp311-cp311-win_amd64.whl (231 kB)
+Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+Downloading starlette-1.2.1-py3-none-any.whl (73 kB)
+Downloading uvicorn-0.48.0-py3-none-any.whl (71 kB)
+Using cached h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading websockets-16.0-cp311-cp311-win_amd64.whl (178 kB)
+Using cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+Using cached tzdata-2026.2-py2.py3-none-any.whl (349 kB)
+Installing collected packages: websockets, watchdog, urllib3, tzdata, typing-extensions, toml, tenacity, smmap, six, rpds-py, python-multipart, pyarrow, protobuf, pillow, numpy, narwhals, MarkupSafe, itsdangerous, idna, httptools, h11, colorama, charset_normalizer, certifi, cachetools, blinker, attrs, requests, referencing, python-dateutil, jinja2, gitdb, click, anyio, uvicorn, starlette, pydeck, pandas, jsonschema-specifications, gitpython, jsonschema, altair, streamlit
+Successfully installed MarkupSafe-3.0.3 altair-6.1.0 anyio-4.13.0 attrs-26.1.0 blinker-1.9.0 cachetools-7.1.4 certifi-2026.5.20 charset_normalizer-3.4.7 click-8.4.1 colorama-0.4.6 gitdb-4.0.12 gitpython-3.1.50 h11-0.16.0 httptools-0.8.0 idna-3.18 itsdangerous-2.2.0 jinja2-3.1.6 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 narwhals-2.22.0 numpy-2.4.6 pandas-3.0.3 pillow-12.2.0 protobuf-7.35.0 pyarrow-24.0.0 pydeck-0.9.2 python-dateutil-2.9.0.post0 python-multipart-0.0.30 referencing-0.37.0 requests-2.34.2 rpds-py-2026.5.1 six-1.17.0 smmap-5.0.3 starlette-1.2.1 streamlit-1.58.0 tenacity-9.1.4 toml-0.10.2 typing-extensions-4.15.0 tzdata-2026.2 urllib3-2.7.0 uvicorn-0.48.0 watchdog-6.0.0 websockets-16.0
+
+(web-ai) C:\Users\Admin>conda env list
+
+# conda environments:
+#
+# * -> active
+# + -> frozen
+base                     C:\Users\Admin\anaconda3
+KHDL-AI                  C:\Users\Admin\anaconda3\envs\KHDL-AI
+KHDL-AI=3.13             C:\Users\Admin\anaconda3\envs\KHDL-AI=3.13
+web-ai               *   C:\Users\Admin\anaconda3\envs\web-ai
+                         C:\Users\Admin\miniconda3
+
+
+(web-ai) C:\Users\Admin>conda activate web-ai
+
+(web-ai) C:\Users\Admin>code .
+
+(web-ai) C:\Users\Admin>pip install streamlit pandas numpy scikit-learn plotly
+Requirement already satisfied: streamlit in .\anaconda3\envs\web-ai\Lib\site-packages (1.57.0)
+Requirement already satisfied: pandas in .\anaconda3\envs\web-ai\Lib\site-packages (3.0.3)
+Requirement already satisfied: numpy in .\anaconda3\envs\web-ai\Lib\site-packages (2.4.6)
+Requirement already satisfied: scikit-learn in .\anaconda3\envs\web-ai\Lib\site-packages (1.8.0)
+Requirement already satisfied: plotly in .\anaconda3\envs\web-ai\Lib\site-packages (6.7.0)
+Requirement already satisfied: altair!=5.4.0,!=5.4.1,<7,>=4.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (6.0.0)
+Requirement already satisfied: blinker<2,>=1.5.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (1.9.0)
+Requirement already satisfied: cachetools<8,>=5.5 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (6.2.2)
+Requirement already satisfied: click<9,>=7.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (8.2.1)
+Requirement already satisfied: gitpython!=3.1.19,<4,>=3.0.7 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (3.1.50)
+Requirement already satisfied: packaging>=20 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (26.0)
+Requirement already satisfied: pillow<13,>=7.1.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (11.1.0)
+Requirement already satisfied: protobuf<8,>=3.20 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (6.33.5)
+Requirement already satisfied: pyarrow>=7.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (23.0.1)
+Requirement already satisfied: requests<3,>=2.27 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (2.34.2)
+Requirement already satisfied: tenacity<10,>=8.1.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (9.1.4)
+Requirement already satisfied: toml<2,>=0.10.1 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (0.10.2)
+Requirement already satisfied: typing-extensions<5,>=4.10.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (4.15.0)
+Requirement already satisfied: starlette>=0.40.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (0.52.1)
+Requirement already satisfied: uvicorn>=0.30.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (0.40.0)
+Requirement already satisfied: httptools>=0.6.3 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (0.7.1)
+Requirement already satisfied: anyio>=4.0.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (4.12.1)
+Requirement already satisfied: python-multipart>=0.0.10 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (0.0.29)
+Requirement already satisfied: websockets>=12.0.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (15.0.1)
+Requirement already satisfied: itsdangerous>=2.1.2 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (2.2.0)
+Requirement already satisfied: watchdog<7,>=2.1.5 in .\anaconda3\envs\web-ai\Lib\site-packages (from streamlit) (6.0.0)
+Requirement already satisfied: python-dateutil>=2.8.2 in .\anaconda3\envs\web-ai\Lib\site-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: tzdata in .\anaconda3\envs\web-ai\Lib\site-packages (from pandas) (2026.2)
+Requirement already satisfied: jinja2 in .\anaconda3\envs\web-ai\Lib\site-packages (from altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit) (3.1.6)
+Requirement already satisfied: jsonschema>=3.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit) (4.25.1)
+Requirement already satisfied: narwhals>=1.27.1 in .\anaconda3\envs\web-ai\Lib\site-packages (from altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit) (2.22.0)
+Requirement already satisfied: colorama in .\anaconda3\envs\web-ai\Lib\site-packages (from click<9,>=7.0->streamlit) (0.4.6)
+Requirement already satisfied: gitdb<5,>=4.0.1 in .\anaconda3\envs\web-ai\Lib\site-packages (from gitpython!=3.1.19,<4,>=3.0.7->streamlit) (4.0.12)
+Requirement already satisfied: smmap<6,>=3.0.1 in .\anaconda3\envs\web-ai\Lib\site-packages (from gitdb<5,>=4.0.1->gitpython!=3.1.19,<4,>=3.0.7->streamlit) (5.0.2)
+Requirement already satisfied: charset_normalizer<4,>=2 in .\anaconda3\envs\web-ai\Lib\site-packages (from requests<3,>=2.27->streamlit) (3.4.4)
+Requirement already satisfied: idna<4,>=2.5 in .\anaconda3\envs\web-ai\Lib\site-packages (from requests<3,>=2.27->streamlit) (3.11)
+Requirement already satisfied: urllib3<3,>=1.26 in .\anaconda3\envs\web-ai\Lib\site-packages (from requests<3,>=2.27->streamlit) (2.7.0)
+Requirement already satisfied: certifi>=2023.5.7 in .\anaconda3\envs\web-ai\Lib\site-packages (from requests<3,>=2.27->streamlit) (2026.5.20)
+Requirement already satisfied: scipy>=1.10.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from scikit-learn) (1.17.1)
+Requirement already satisfied: joblib>=1.3.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from scikit-learn) (1.5.3)
+Requirement already satisfied: threadpoolctl>=3.2.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from scikit-learn) (3.5.0)
+Requirement already satisfied: attrs>=22.2.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit) (26.1.0)
+Requirement already satisfied: jsonschema-specifications>=2023.03.6 in .\anaconda3\envs\web-ai\Lib\site-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit) (2025.9.1)
+Requirement already satisfied: referencing>=0.28.4 in .\anaconda3\envs\web-ai\Lib\site-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit) (0.37.0)
+Requirement already satisfied: rpds-py>=0.7.1 in .\anaconda3\envs\web-ai\Lib\site-packages (from jsonschema>=3.0->altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit) (0.28.0)
+Requirement already satisfied: six>=1.5 in .\anaconda3\envs\web-ai\Lib\site-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)
+Requirement already satisfied: h11>=0.8 in .\anaconda3\envs\web-ai\Lib\site-packages (from uvicorn>=0.30.0->streamlit) (0.16.0)
+Requirement already satisfied: MarkupSafe>=2.0 in .\anaconda3\envs\web-ai\Lib\site-packages (from jinja2->altair!=5.4.0,!=5.4.1,<7,>=4.0->streamlit) (3.0.2)
+
+(web-ai) C:\Users\Admin>
